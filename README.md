@@ -17,7 +17,7 @@ Gerador estático em Python que cria um site de conteúdo sobre café em casa, c
    ```
 4. Gere o site:
    ```bash
-   python scripts/generate.py
+   python -m scripts.generate
    ```
 5. Abra `public/index.html` no navegador. O CSS é copiado para `public/styles.css` automaticamente.
 
