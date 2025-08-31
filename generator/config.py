@@ -21,12 +21,17 @@ class Config:
     # Diretórios
     OUTPUT_DIR: str = os.getenv("OUTPUT_DIR", "public")
     CACHE_DIR: str = os.getenv("CACHE_DIR", "cache")
+    ASSETS_DIR: str = os.getenv("ASSETS_DIR", "public/assets")
 
     # LLM/OpenRouter
     OPENROUTER_API_KEY: str | None = os.getenv("OPENROUTER_API_KEY")
     OPENROUTER_MODEL: str = os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-chat-v3.1:free")
     LLM_MAX_CALLS_PER_RUN: int = int(os.getenv("LLM_MAX_CALLS_PER_RUN", "3"))
     GENERATE_WITH_LLM: bool = os.getenv("GENERATE_WITH_LLM", "true").lower() in {"1", "true", "yes"}
+    # Imagens via OpenRouter (opcional)
+    GENERATE_IMAGES: bool = os.getenv("GENERATE_IMAGES", "true").lower() in {"1", "true", "yes"}
+    IMAGE_MODEL: str = os.getenv("IMAGE_MODEL", "google/gemini-2.5-flash-image-preview:free")
+    IMG_MAX_CALLS_PER_RUN: int = int(os.getenv("IMG_MAX_CALLS_PER_RUN", "3"))
 
     # Limites de geração
     MAX_POSTS_TOTAL: int = int(os.getenv("MAX_POSTS_TOTAL", "200"))

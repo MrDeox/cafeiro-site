@@ -9,6 +9,7 @@ from generator.utils import ensure_dir, slugify, write_text, read_text
 from generator.renderer import render_article, render_index, render_page, render_sitemap, render_robots
 from generator.llm import gen_title_and_description, gen_article_body
 from generator.affiliate import render_cta_links
+from generator.images import generate_image
 
 
 SEED_PATH = "data/keywords.txt"
@@ -71,6 +72,14 @@ def build_article(keyword: str, used_llm: dict) -> dict:
         body = gen_article_body(keyword, outline)
 
     ctas = render_cta_links(keyword)
+    # Imagem (com limite por run)
+    image_url = None
+    image_alt = None
+    if cfg.GENERATE_IMAGES and used_llm.get("img", 0) < cfg.IMG_MAX_CALLS_PER_RUN:
+        res = generate_image(keyword, title)
+        if res:
+            image_url, image_alt = res
+            used_llm["img"] = used_llm.get("img", 0) + 1
     return {
         "slug": slug,
         "url": f"{cfg.SITE_URL}/posts/{slug}/",
@@ -80,6 +89,8 @@ def build_article(keyword: str, used_llm: dict) -> dict:
         "date": datetime.utcnow().strftime("%Y-%m-%d"),
         "body_md": body,
         "ctas": ctas,
+        "image_url": image_url,
+        "image_alt": image_alt,
     }
 
 
@@ -185,7 +196,9 @@ def main():
         with open(dst_css, "w", encoding="utf-8") as f:
             f.write(css)
 
-    print(f"Gerados {len(posts)} posts em {cfg.OUTPUT_DIR} (LLM chamadas: {used_llm['count']}).")
+    print(
+        f"Gerados {len(posts)} posts em {cfg.OUTPUT_DIR} (LLM textos: {used_llm.get('count', 0)}, imagens: {used_llm.get('img', 0)})."
+    )
 
 
 if __name__ == "__main__":

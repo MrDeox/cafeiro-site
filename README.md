@@ -32,6 +32,10 @@ Gerador estático em Python que cria um site de conteúdo sobre café em casa, c
 ## Afiliados e monetização
 - Defina `AMAZON_TAG_BR` (ex.: `SEU_TAG-20`).
 - O gerador insere CTAs com buscas na Amazon BR relacionadas ao tema do artigo.
+\n+## Imagens automáticas (opcional)
+- Usa OpenRouter com `IMAGE_MODEL` (padrão: `google/gemini-2.5-flash-image-preview:free`).
+- Fallback local gera um placeholder SVG em `public/assets/` se a API falhar ou estiver desabilitada.
+- Controle de custo: `IMG_MAX_CALLS_PER_RUN` limita quantas imagens novas são geradas por execução.
 
 ## Deploy automático (GitHub Pages)
 1. Suba este repositório para o GitHub.
@@ -53,6 +57,7 @@ Observação sobre custos: mesmo com LLM habilitado, há limite por execução (
 - `templates/` — HTML/CSS base e sitemap/robots
 - `data/keywords.txt` — lista de temas
 - `public/` — saída estática pronta para deploy
+ - `public/assets/` — imagens de capa
 
 ## Customizações rápidas
 - Nome do site e tagline: edite `.env` ou use variáveis de ambiente.

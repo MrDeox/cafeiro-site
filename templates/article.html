@@ -1,5 +1,6 @@
 {% set title = article.title %}
 {% set description = article.description %}
+{% set og_image = article.image_url %}
 {% extends "base.html" %}
 {% block content %}
   <article class="post">
@@ -9,6 +10,12 @@
       <p class="description">{{ article.description }}</p>
       <aside class="affiliate-note">Transparência: ao comprar por nossos links, podemos ganhar comissão.</aside>
     </header>
+
+    {% if article.image_url %}
+    <figure class="hero-image">
+      <img src="{{ article.image_url }}" alt="{{ article.image_alt }}" />
+    </figure>
+    {% endif %}
 
     <div class="content">{{ article.body_html | safe }}</div>
 
@@ -24,4 +31,3 @@
     {% endif %}
   </article>
 {% endblock %}
-

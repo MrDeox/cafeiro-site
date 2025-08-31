@@ -10,6 +10,10 @@
     {% if description %}<meta property="og:description" content="{{ description }}" />{% endif %}
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ SITE_URL }}" />
+    {% if og_image %}
+    <meta property="og:image" content="{{ og_image }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {% endif %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
