@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or SITE_NAME }}{% if subtitle %} — {{ subtitle }}{% endif %}</title>
+    {% if description %}<meta name="description" content="{{ description }}" />{% endif %}
+    <meta property="og:site_name" content="{{ SITE_NAME }}" />
+    <meta property="og:title" content="{{ title or SITE_NAME }}" />
+    {% if description %}<meta property="og:description" content="{{ description }}" />{% endif %}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ SITE_URL }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ BASE_PATH }}styles.css" />
+    {% if GA_MEASUREMENT_ID %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_MEASUREMENT_ID }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
+      gtag('config', '{{ GA_MEASUREMENT_ID }}');
+    </script>
+    {% endif %}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="{{ BASE_PATH }}">{{ SITE_NAME }}</a>
+        <nav>
+          <a href="{{ BASE_PATH }}sobre/">Sobre</a>
+          <a href="{{ BASE_PATH }}afiliados/">Afiliados</a>
+          <a href="{{ BASE_PATH }}privacidade/">Privacidade</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>© {{ SITE_NAME }} — Conteúdo em PT-BR. Alguns links podem gerar comissão. </p>
+      </div>
+    </footer>
+    <script>
+    // Navegação suave simples
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{ e.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'}); });
+    });
+    </script>
+  </body>
+  </html>

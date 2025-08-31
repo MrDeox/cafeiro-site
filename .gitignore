@@ -1,0 +1,19 @@
+# env/secrets
+.env
+
+# caches and builds
+cache/
+public/
+
+# python
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# venvs
+venv/
+.venv/
+
+# os junk
+.DS_Store
+Thumbs.db

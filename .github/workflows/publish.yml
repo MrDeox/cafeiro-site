@@ -1,0 +1,77 @@
+name: Build and Publish (Pages)
+
+on:
+  push:
+    branches: [ main, master ]
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore LLM cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache
+          key: llm-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            llm-cache-${{ runner.os }}-
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate site
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          AMAZON_TAG_BR: ${{ secrets.AMAZON_TAG_BR }}
+          SITE_URL: ${{ secrets.SITE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+          GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+        run: |
+          python scripts/generate.py
+          cp templates/styles.css public/styles.css
+
+      - name: Save LLM cache
+        uses: actions/cache/save@v4
+        with:
+          path: cache
+          key: llm-cache-${{ runner.os }}-${{ github.run_id }}
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

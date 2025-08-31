@@ -1,0 +1,27 @@
+{% set title = article.title %}
+{% set description = article.description %}
+{% extends "base.html" %}
+{% block content %}
+  <article class="post">
+    <header>
+      <h1>{{ article.title }}</h1>
+      <p class="meta">Atualizado em {{ article.date }}</p>
+      <p class="description">{{ article.description }}</p>
+      <aside class="affiliate-note">Transparência: ao comprar por nossos links, podemos ganhar comissão.</aside>
+    </header>
+
+    <div class="content">{{ article.body_html | safe }}</div>
+
+    {% if article.ctas and article.ctas|length %}
+    <div class="cta">
+      <strong>Confira também:</strong>
+      <ul>
+        {% for c in article.ctas %}
+        <li><a rel="nofollow sponsored" target="_blank" href="{{ c.url }}">{{ c.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </article>
+{% endblock %}
+

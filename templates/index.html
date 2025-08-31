@@ -1,0 +1,21 @@
+{% set title = SITE_NAME %}
+{% set description = SITE_TAGLINE %}
+{% extends "base.html" %}
+{% block content %}
+  <section class="hero">
+    <h1>{{ SITE_NAME }}</h1>
+    <p class="tagline">{{ SITE_TAGLINE }}</p>
+  </section>
+
+  <section class="post-list">
+    <h2>Guias recentes</h2>
+    <ul>
+      {% for p in posts %}
+      <li>
+        <a href="{{ BASE_PATH }}posts/{{ p.slug }}/">{{ p.title }}</a>
+        <small>— {{ p.description }}</small>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}
