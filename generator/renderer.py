@@ -41,6 +41,7 @@ def render_index(outdir: str, posts: list[dict]) -> str:
     env = _env()
     tpl = env.get_template("index.html")
     html = tpl.render(posts=posts)
+    ensure_dir(outdir)
     path = os.path.join(outdir, "index.html")
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
@@ -51,6 +52,7 @@ def render_page(outdir: str, page: dict) -> str:
     env = _env()
     tpl = env.get_template("page.html")
     html = tpl.render(page=page)
+    ensure_dir(outdir)
     path = os.path.join(outdir, "index.html")
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
